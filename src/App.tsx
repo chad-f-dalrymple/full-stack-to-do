@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getTodos } from './utils/utils'
-import { Container } from '@chakra-ui/react'
+import { Container, Flex } from '@chakra-ui/react'
 import ListComponent from './components/list'
 import ListFieldSet from './components/field'
 import './App.css'
@@ -24,17 +24,20 @@ function App() {
     console.log('im fetching')
     setTodos(data);
     setHasUpdates(false)
+    console.log(data)
   };
 
   return (
     <Container style={{width: '350px'}}>
-      <ListFieldSet checkUpdates={setHasUpdates} />
-      <ListComponent
-        refreshList={fetchTodos}
-        checkUpdates={setHasUpdates}
-        listItems={toDos}
-        setListItems={setTodos}
-      />
+      <Flex direction="column" gap="4">
+        <ListFieldSet checkUpdates={setHasUpdates} />
+        <ListComponent
+          refreshList={fetchTodos}
+          checkUpdates={setHasUpdates}
+          listItems={toDos}
+          setListItems={setTodos}
+        />
+      </Flex>
     </Container>
   )
 }

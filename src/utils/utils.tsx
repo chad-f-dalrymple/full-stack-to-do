@@ -6,25 +6,25 @@ export const getTodos = async () => {
   return response.json();
 };
 
-export const addTodo = async (title: string) => {
+export const addTodo = async (title: string, dateCreated: Date, priority: string) => {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title }),
+    body: JSON.stringify({ title, dateCreated, priority }),
   });
   return response.json();
 };
 
-export const updateTodo = async (id: number, completed: boolean) => {
+export const updateTodo = async (id: number, completed: boolean, date: Date) => {
   const response = await fetch(`${API_URL}/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ completed }),
+    body: JSON.stringify({ completed, date }),
   });
   return response.json();
 };
 
-export const deleteTodo = async (id: string) => {
+export const deleteTodo = async (id: number) => {
   await fetch(`${API_URL}/${id}`, { method: "DELETE" });
 };
 
