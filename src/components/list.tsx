@@ -14,38 +14,40 @@ interface Props {
 }
 
 const ListComponent = (props: Props) => {
+    let isChecked: string | boolean;
     const { listItems, checkUpdates } = props
-    const [checked, setChecked] = useState(false)
     const currentDate = moment().format("YYYY-MM-DD HH:MM:SS")
     const deleteItem = async (item: number) => await deleteTodo(item)
     const updateItem = async (id: number, checked: boolean, date: any) => await updateTodo(id, checked, date)
-    const className = (priority: string) => {
+    const className = (priority: string, completed: string | boolean) => {
         if (priority === 'High') {
-            return 'bg-red-600'
+            return isChecked || completed ? 'bg-gray-200' : 'bg-red-600'
         }
         if (priority === 'Medium') {
-            return 'bg-amber-600'
+            return isChecked || completed ? 'bg-gray-200' : 'bg-amber-600'
         }
         if (priority === 'Low') {
-            return 'bg-green-600'
+            return isChecked || completed ? 'bg-gray-200' : 'bg-green-600'
         }
     }
+    const itemClassName = (completed: string | boolean) => completed || isChecked ? "text-gray-200" : "text-blue-600"
     const list = listItems.map((item, idx) =>
         <Flex direction='row' gap="4" align="center">
             <Flex direction="row" gap="4" align="center">
                 <Checkbox
-                    colorPalette="orange"
+                    colorPalette={item.completed || isChecked ? "gray" : "orange"}
                     variant='outline'
                     key={`${item.completed}${idx}`}
-                    checked={checked}
                     onCheckedChange={e => {
-                        setChecked(!!e.checked)
-                        updateItem(item.id, checked, currentDate)
+                        isChecked = e.checked
+                        // @ts-ignore
+                        updateItem(item.id, isChecked, currentDate)
                     }}
+                    disabled={item.completed || isChecked}
                     defaultChecked={item.completed}
                 />
-                <div className="text-blue-600" key={item.title}>{item.title}</div>
-                <div className={`${className(item.priority)} rounded-sm`} style={{paddingInline: '8px'}} key={`${item.title}-${item.priority}`}>{item.priority}</div>
+                <div className={itemClassName(item.completed)} key={item.title}>{item.title}</div>
+                <div className={`${className(item.priority, item.completed)} rounded-sm`} style={{paddingInline: '8px'}} key={`${item.title}-${item.priority}`}>{item.priority}</div>
             </Flex>
             <Button
                 variant="plain"

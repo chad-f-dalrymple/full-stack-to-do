@@ -23,7 +23,6 @@ function App() {
     const data = await getTodos();
     setTodos(data);
     setHasUpdates(false)
-    console.log(data)
   };
 
   return (
