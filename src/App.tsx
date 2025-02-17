@@ -21,7 +21,6 @@ function App() {
 
   const fetchTodos = async () => {
     const data = await getTodos();
-    console.log('im fetching')
     setTodos(data);
     setHasUpdates(false)
     console.log(data)
@@ -30,7 +29,7 @@ function App() {
   return (
     <Container style={{width: '350px'}}>
       <Flex direction="column" gap="4">
-        <ListFieldSet checkUpdates={setHasUpdates} />
+        <ListFieldSet checkUpdates={setHasUpdates} listItems={toDos} />
         <ListComponent
           refreshList={fetchTodos}
           checkUpdates={setHasUpdates}

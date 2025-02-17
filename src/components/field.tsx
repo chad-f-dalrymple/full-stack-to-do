@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, createListCollection, Fieldset, Input, Stack } from '@chakra-ui/react';
 import { Field } from "./ui/field";
 import { addTodo } from "../utils/utils";
@@ -10,7 +10,6 @@ import {
     SelectTrigger,
     SelectValueText
 } from "@chakra-ui/react";
-import moment from 'moment';
 
 const ListFieldSet = (props: any) => {
     const { checkUpdates } = props
@@ -23,11 +22,12 @@ const ListFieldSet = (props: any) => {
     })
     const [selectedPriority, setSelectedPriority] = useState<string[]>([])
     const [inputValue, setInputValue] = useState('')
-    const currentDate = moment().format("YYYY-MM-DD HH:MM:SS")
+    // const currentDate = moment().format("YYYY-MM-DD HH:MM:SS")
     const priority = () => selectedPriority[0] !== '' ? selectedPriority[0] : ''
     const handleInputChange = (e: any) => setInputValue(e.target.value)
-    const createToDo = async (title: string, date: any, priority: string) => await addTodo(title, date, priority)
+    const createToDo = async (title: string, priority: string) => await addTodo(title, priority)
     const defaultValue = ["Medium"]
+
     return (
         <Fieldset.Root size="lg" maxW="md">
             <Stack>
@@ -38,14 +38,14 @@ const ListFieldSet = (props: any) => {
             </Stack>
     
             <Fieldset.Content>
-            <Field className="text-black" label="Title">
-                <Input
-                    color="black"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    name="title"
-                />
-            </Field>
+                <Field className="text-black" label="Title">
+                    <Input
+                        color="black"
+                        value={inputValue}
+                        onChange={handleInputChange}
+                        name="title"
+                    />
+                </Field>
             </Fieldset.Content>
             <SelectRoot collection={priorityValues} value={selectedPriority} defaultValue={defaultValue} variant="subtle" onValueChange={(e) => setSelectedPriority(e.value)}>
             <SelectLabel>Select priority</SelectLabel>
@@ -63,7 +63,7 @@ const ListFieldSet = (props: any) => {
             <Button
                 variant="plain"
                 onClick={(e) => {
-                    createToDo(inputValue, currentDate, priority())
+                    createToDo(inputValue, priority())
                     checkUpdates(true)
                     setInputValue('')
                     setSelectedPriority(defaultValue)
