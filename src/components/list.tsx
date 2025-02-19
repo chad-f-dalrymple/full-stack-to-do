@@ -1,5 +1,4 @@
-import { useEffect, useState} from 'react';
-import { List, Flex, Container, Button } from '@chakra-ui/react';
+import { Flex, Container, Button } from '@chakra-ui/react';
 import { Checkbox } from './ui/checkbox';
 import { deleteTodo, updateTodo } from '../utils/utils';
 import { Icon } from '@chakra-ui/react';
@@ -58,7 +57,7 @@ const ListComponent = (props: Props) => {
             </Flex>
             <Button
                 variant="plain"
-                onClick={(e) => {
+                onClick={() => {
                     deleteItem(item.id)
                     checkUpdates(true)
                 }}

@@ -69,7 +69,7 @@ const ListFieldSet = (props: any) => {
             <Button
                 disabled={inputValue === ''}
                 colorPalette="green"
-                onClick={(e) => {
+                onClick={() => {
                     createToDo(inputValue, priority())
                     checkUpdates(true)
                     setInputValue('')
