@@ -10,6 +10,9 @@
     "preview": "vite preview",
     "postbuild": "cp nginx.conf dist/"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "@chakra-ui/react": "^3.8.0",
     "@emotion/react": "^11.14.0",
