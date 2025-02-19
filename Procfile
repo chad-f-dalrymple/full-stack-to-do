@@ -1,2 +1,2 @@
-web: bin/start-nginx-solo
+web: nginx -g "daemon off;"
 
