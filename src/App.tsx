@@ -26,8 +26,8 @@ function App() {
   };
 
   return (
-    <Container style={{width: '350px'}}>
-      <Flex direction="column" gap="4">
+    <Container style={{width: '350px', padding: '12px'}} className='bg-gray-200 rounded-md'>
+      <Flex direction="column" gap="8">
         <ListFieldSet checkUpdates={setHasUpdates} listItems={toDos} />
         <ListComponent
           refreshList={fetchTodos}

@@ -32,8 +32,9 @@ const ListComponent = (props: Props) => {
     }
     const itemClassName = (completed: string | boolean) => completed || isChecked ? "text-gray-200" : "text-blue-600"
     const list = listItems.map((item, idx) =>
-        <Flex direction='row' gap="4" align="center">
-            <Flex direction="row" gap="4" align="center">
+        <>
+            <Flex justify="space-between" align="center" gap="4">
+            <Flex direction='row' gap="4" align="center" justify="flex-start">
                 <Checkbox
                     colorPalette={item.completed || isChecked ? "gray" : "orange"}
                     variant='outline'
@@ -47,7 +48,13 @@ const ListComponent = (props: Props) => {
                     defaultChecked={item.completed}
                 />
                 <div className={itemClassName(item.completed)} key={item.title}>{item.title}</div>
-                <div className={`${className(item.priority, item.completed)} rounded-sm`} style={{paddingInline: '8px'}} key={`${item.title}-${item.priority}`}>{item.priority}</div>
+                <div
+                    className={`${className(item.priority, item.completed)} rounded-sm`}
+                    style={{paddingInline: '8px'}}
+                    key={`${item.title}-${item.priority}`}
+                >
+                    {item.priority}
+                </div>
             </Flex>
             <Button
                 variant="plain"
@@ -61,10 +68,11 @@ const ListComponent = (props: Props) => {
                     <MdDelete />
                 </Icon>
             </Button>
-        </Flex>
+            </Flex>
+        </>
     )
     return (
-        <Container maxWidth="xl" px="2">
+        <Container style={{marginTop: '14px'}} maxWidth="xl" px="2">
             {list}
         </Container>
     )

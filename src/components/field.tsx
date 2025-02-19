@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, createListCollection, Fieldset, Input, Stack } from '@chakra-ui/react';
 import { Field } from "./ui/field";
 import { addTodo } from "../utils/utils";
-import { 
+import {
     SelectContent,
     SelectItem,
     SelectLabel,
     SelectRoot,
     SelectTrigger,
-    SelectValueText
-} from "@chakra-ui/react";
+    SelectValueText,
+  } from "@/components/ui/select"
 
 const ListFieldSet = (props: any) => {
     const { checkUpdates } = props
@@ -20,56 +20,64 @@ const ListFieldSet = (props: any) => {
             { label: "Low", value: "Low"}
         ]
     })
-    const [selectedPriority, setSelectedPriority] = useState<string[]>([])
+    const [selectedPriority, setSelectedPriority] = useState<string[]>(["Medium"])
     const [inputValue, setInputValue] = useState('')
     // const currentDate = moment().format("YYYY-MM-DD HH:MM:SS")
     const priority = () => selectedPriority[0] !== '' ? selectedPriority[0] : ''
     const handleInputChange = (e: any) => setInputValue(e.target.value)
     const createToDo = async (title: string, priority: string) => await addTodo(title, priority)
-    const defaultValue = ["Medium"]
 
     return (
         <Fieldset.Root size="lg" maxW="md">
             <Stack>
-            <Fieldset.Legend>To Do list</Fieldset.Legend>
-            <Fieldset.HelperText>
+            <Fieldset.Legend className="text-left font-extrabold" color="black">To Do list</Fieldset.Legend>
+            <Fieldset.HelperText className="text-left" color="black">
                 Add an item to your list.
             </Fieldset.HelperText>
             </Stack>
     
             <Fieldset.Content>
-                <Field className="text-black" label="Title">
+                <Field className="text-black" label="Item">
                     <Input
                         color="black"
                         value={inputValue}
                         onChange={handleInputChange}
-                        name="title"
+                        name="item"
                     />
                 </Field>
             </Fieldset.Content>
-            <SelectRoot collection={priorityValues} value={selectedPriority} defaultValue={defaultValue} variant="subtle" onValueChange={(e) => setSelectedPriority(e.value)}>
-            <SelectLabel>Select priority</SelectLabel>
+            <SelectRoot
+                color="black"
+                size="sm"
+                collection={priorityValues}
+                value={selectedPriority}
+                defaultValue={["Medium"]}
+                onValueChange={(e) => setSelectedPriority(e.value)}
+            >
+                <SelectLabel textAlign="left">Select priority</SelectLabel>
                 <SelectTrigger>
                     <SelectValueText placeholder="Select priority" />
                 </SelectTrigger>
                 <SelectContent>
                     {priorityValues.items.map((priority) => (
-                    <SelectItem item={priority} key={priority.value}>
-                        {priority.label}
-                    </SelectItem>
+                        <SelectItem item={priority} key={priority.value}>
+                            {priority.label}
+                        </SelectItem>
                     ))}
                 </SelectContent>
             </SelectRoot>
             <Button
-                variant="plain"
+                disabled={inputValue === ''}
+                colorPalette="green"
                 onClick={(e) => {
                     createToDo(inputValue, priority())
                     checkUpdates(true)
                     setInputValue('')
-                    setSelectedPriority(defaultValue)
+                    setSelectedPriority(["Medium"])
                 }}
             >
-                Create</Button>
+                Create
+            </Button>
         </Fieldset.Root>
     )
 }
