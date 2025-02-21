@@ -25,7 +25,8 @@ class Todo(db.Model):
 
 # Create the database tables
 with app.app_context():
-    db.create_all()
+    if app.config['SQLALCHEMY_DATABASE_URI'] == 'sqlite:///todos.db':
+        db.create_all()
 
 # Routes
 @app.route('/todos', methods=['GET'])
