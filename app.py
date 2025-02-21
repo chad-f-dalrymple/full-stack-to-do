@@ -7,8 +7,12 @@ import os
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend
 
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri and uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+
 # SQLite database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL?sslmode=require').replace('postgres://', 'postgresql://') or 'sqlite:///todos.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = uri or 'sqlite:///todos.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
