@@ -1,0 +1,24 @@
+# mime.types
+types {
+    text/html                             html htm shtml;
+    text/css                              css;
+    text/xml                              xml;
+    image/gif                             gif;
+    image/jpeg                            jpeg jpg;
+    application/javascript                js;
+    application/json                      json;
+    image/png                             png;
+    image/svg+xml                         svg;
+    application/font-woff                 woff;
+    application/font-woff2                woff2;
+    application/vnd.ms-fontobject         eot;
+    application/x-font-ttf                ttf;
+    font/otf                              otf;
+    application/octet-stream              bin exe dll;
+    application/zip                       zip;
+    application/x-gzip                    gz tgz;
+    audio/mpeg                            mp3;
+    audio/ogg                             oga ogg;
+    video/mp4                             mp4;
+    video/ogg                             ogv;
+}
