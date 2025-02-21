@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "heroku-postbuild": "npm install --omit=dev && npm run build"
+    "heroku-postbuild": "npm install && npm run build"
   },
   "engines": {
     "node": "22.x"
