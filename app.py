@@ -1,10 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from datetime import datetime
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 CORS(app)  # Enable CORS for frontend
 
 uri = os.getenv("DATABASE_URL")  # or other relevant config var
@@ -29,6 +29,8 @@ with app.app_context():
         db.create_all()
 
 # Routes
+@app.route('/', methods=['GET'])
+
 @app.route('/todos', methods=['GET'])
 def get_todos():
     todos = Todo.query.all()
@@ -72,6 +74,13 @@ def delete_todo_all():
     db.session.clear()
     db.session.commit()
     return jsonify({"message": "List cleared"})
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_static(path):
+    if path and not os.path.exists(os.path.join(app.static_folder, path)):
+        path = 'index.html'  # changed from 'index.html'
+    return send_from_directory(app.static_folder, path)
 
 
 
