@@ -79,7 +79,7 @@ def delete_todo_all():
 @app.route('/<path:path>')
 def serve_static(path):
     if path and not os.path.exists(os.path.join(app.static_folder, path)):
-        path = 'index.html'  # changed from 'index.html'
+        path = 'index.html'  # Serve index.html if file not found
     return send_from_directory(app.static_folder, path)
 
 
