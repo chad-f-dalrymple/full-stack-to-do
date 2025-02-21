@@ -1,1 +1,1 @@
-web: mkdir -p /tmp/nginx/logs && PORT=${PORT:-8080} envsubst '$PORT' < nginx.conf > /tmp/nginx/nginx.conf && nginx -c /tmp/nginx/nginx.conf -g "daemon off;"
+web: gunicorn app:app
