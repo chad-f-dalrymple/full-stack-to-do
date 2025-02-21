@@ -1,2 +1,3 @@
-https://buildpack-registry.s3.amazonaws.com/heroku/nodejs/releases/v180  # Or latest version
-https://buildpack-registry.s3.amazonaws.com/heroku/nginx/releases/v134 # Or latest version
+https://buildpack-registry.s3.amazonaws.com/heroku/nodejs/releases/v180
+https://buildpack-registry.heroku.com/heroku/python
+https://buildpack-registry.s3.amazonaws.com/heroku/nginx/releases/v134
