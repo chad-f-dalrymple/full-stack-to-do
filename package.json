@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "postinstall": "npm install --omit=dev && tsc",
     "heroku-postbuild": "npm install --omit=dev && npm run build && cp -r public/* static/"
   },
   "engines": {
