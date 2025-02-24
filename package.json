@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "heroku-postbuild": "npm install --omit=dev && npm run build && cp -r public/* static/"
+    "heroku-postbuild": "npm install && npm run build && cp -r public/* static/"
   },
   "engines": {
     "node": "22.x"
@@ -23,8 +23,7 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-select": "^5.10.0",
-    "tailwindcss": "^4.0.6",
-    "typescript": "~5.7.2"
+    "tailwindcss": "^4.0.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
