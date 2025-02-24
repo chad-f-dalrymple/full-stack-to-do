@@ -2,7 +2,6 @@ const API_URL = import.meta.env.REACT_APP_API_URL || "http://127.0.0.1:5000/todo
 
 export const getTodos = async () => {
   const response = await fetch(API_URL);
-  console.log(response)
   return response.json();
 };
 
