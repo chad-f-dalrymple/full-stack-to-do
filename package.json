@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "start": "node --env-file=.env dist/index.js",
     "heroku-postbuild": "npm install && npm run build && cp -r public/* static/"
   },
   "engines": {
