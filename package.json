@@ -2,7 +2,7 @@
     "name": "to-do-webb",
     "version": "1.0.0",
     "scripts": {
-      "postinstall": "cd frontend && npm install && npm run build"
+      "postinstall": "cd frontend && npm install npm install --include=dev && npm run build"
     },
     "engines": {
       "node": "16.x",
