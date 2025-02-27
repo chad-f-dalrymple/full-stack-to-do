@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 from flask_apscheduler import APScheduler
 from flask_migrate import Migrate
@@ -43,7 +43,7 @@ def init_db():
 # Function to clear old todos
 def clear_old_todos():
     with app.app_context():
-        # Define the age threshold (e.g., 7 days)
+        # Define the age threshold (e.g., 7 days)1
         threshold_date = datetime.utcnow() - timedelta(days=7)
         
         # Delete todos older than the threshold
