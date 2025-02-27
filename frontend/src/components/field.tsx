@@ -12,7 +12,7 @@ import {
   } from "../components/ui/select"
 
 const ListFieldSet = (props: any) => {
-    const { checkUpdates } = props
+    const { checkUpdates, listName } = props
     const priorityValues = createListCollection({
         items: [
             { label: "High", value: "High"},
@@ -21,11 +21,13 @@ const ListFieldSet = (props: any) => {
         ]
     })
     const [selectedPriority, setSelectedPriority] = useState<string[]>(["Medium"])
-    const [inputValue, setInputValue] = useState('')
+    const [itemInputValue, setItemInputValue] = useState('')
+    const [nameInputValue, setNameInputValue] = useState(listName)
     // const currentDate = moment().format("YYYY-MM-DD HH:MM:SS")
     const priority = () => selectedPriority[0] !== '' ? selectedPriority[0] : ''
-    const handleInputChange = (e: any) => setInputValue(e.target.value)
-    const createToDo = async (title: string, priority: string) => await addTodo(title, priority)
+    const handleItemInputChange = (e: any) => setItemInputValue(e.target.value)
+    const handleNameInputChange = (e: any) => setNameInputValue(e.target.value)
+    const createToDo = async (title: string, priority: string, name: string) => await addTodo(title, priority, name)
 
     return (
         <Fieldset.Root size="lg" maxW="md">
@@ -39,10 +41,22 @@ const ListFieldSet = (props: any) => {
             <Fieldset.Content>
                 <Field className="text-black" label="Item">
                     <Input
+                        variant="flushed"
                         color="black"
-                        value={inputValue}
-                        onChange={handleInputChange}
+                        value={itemInputValue}
+                        onChange={handleItemInputChange}
                         name="item"
+                    />
+                </Field>
+            </Fieldset.Content>
+            <Fieldset.Content>
+                <Field className="text-black" label="Name">
+                    <Input
+                        variant="flushed"
+                        color="black"
+                        value={nameInputValue}
+                        onChange={handleNameInputChange}
+                        name="name"
                     />
                 </Field>
             </Fieldset.Content>
@@ -67,12 +81,13 @@ const ListFieldSet = (props: any) => {
                 </SelectContent>
             </SelectRoot>
             <Button
-                disabled={inputValue === ''}
+                disabled={itemInputValue === '' || nameInputValue === ''}
                 colorPalette="green"
                 onClick={() => {
-                    createToDo(inputValue, priority())
+                    createToDo(itemInputValue, priority(), nameInputValue)
                     checkUpdates(true)
-                    setInputValue('')
+                    setItemInputValue('')
+                    setNameInputValue('')
                     setSelectedPriority(["Medium"])
                 }}
             >

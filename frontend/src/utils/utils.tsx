@@ -1,15 +1,15 @@
 const API_URL = "/api/todos";
 
 export const getTodos = async () => {
-  const response = await fetch(API_URL);
+  const response = await fetch(`${API_URL}`);
   return response.json();
 };
 
-export const addTodo = async (title: string, priority: string) => {
+export const addTodo = async (title: string, priority: string, name: string) => {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title, priority }),
+    body: JSON.stringify({ title, priority, name }),
   });
   return response.json();
 };
