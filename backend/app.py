@@ -4,6 +4,7 @@ from flask_cors import CORS
 from datetime import datetime
 import os
 from flask_apscheduler import APScheduler
+from flask_migrate import Migrate
 
 app = Flask(__name__, static_folder='../frontend/dist')
 CORS(app)  # Enable CORS for frontend
@@ -22,6 +23,8 @@ else:
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+migrate = Migrate(app, db)
 
 # Define the To-Do model
 class Todo(db.Model):
