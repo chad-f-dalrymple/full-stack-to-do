@@ -6,8 +6,15 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths(), tailwindcss()],
-  base: process.env.NODE_ENV === 'production' ? '/static/' : '/', // Or a specific path
   build: {
-    outDir: '../static', // Build directly to the backend's static directory
+    outDir: 'dist', // Build directly to the backend's static directory
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      }
+    }
+  }
 })

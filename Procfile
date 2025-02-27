@@ -1,2 +1,1 @@
-web: gunicorn --bind :$PORT app:app
-release: npm run build
+web: cd backend && python3 app.py

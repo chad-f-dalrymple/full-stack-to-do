@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { getTodos } from './utils/utils'
 import { Container, Flex } from '@chakra-ui/react'
 import ListComponent from './components/list'

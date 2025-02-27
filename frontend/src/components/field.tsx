@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, createListCollection, Fieldset, Input, Stack } from '@chakra-ui/react';
 import { Field } from "./ui/field";
 import { addTodo } from "../utils/utils";
@@ -9,7 +9,7 @@ import {
     SelectRoot,
     SelectTrigger,
     SelectValueText,
-  } from "@/components/ui/select"
+  } from "../components/ui/select"
 
 const ListFieldSet = (props: any) => {
     const { checkUpdates } = props

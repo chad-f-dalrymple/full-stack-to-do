@@ -4,15 +4,20 @@ from flask_cors import CORS
 from datetime import datetime
 import os
 
-app = Flask(__name__, static_folder='static')
+app = Flask(__name__, static_folder='../frontend/dist')
 CORS(app)  # Enable CORS for frontend
 
-uri = os.getenv("DATABASE_URL")  # or other relevant config var
+uri = os.environ.get("DATABASE_URL")  # or other relevant config var
 if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
-# SQLite database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = uri or 'sqlite:///todos.db'
+if uri:
+    # Production Heroku
+    app.config['SQLALCHEMY_DATABASE_URI'] = uri
+else:
+    # Development (sqlite)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos.db'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -23,20 +28,18 @@ class Todo(db.Model):
     completed = db.Column(db.Boolean, default=False)
     priority = db.Column(db.String, nullable=False)
 
-# Create the database tables
-with app.app_context():
-    if app.config['SQLALCHEMY_DATABASE_URI'] == 'sqlite:///todos.db':
-        db.create_all()
+def init_db():
+    """Initialize the database."""
+    db.create_all()
+    db.session.commit()
 
-# Routes
-@app.route('/', methods=['GET'])
-
-@app.route('/todos', methods=['GET'])
+# API Routes
+@app.route('/api/todos', methods=['GET'])
 def get_todos():
     todos = Todo.query.all()
     return jsonify([{"id": t.id, "title": t.title, "completed": t.completed, "priority": t.priority} for t in todos])
 
-@app.route('/todos', methods=['POST'])
+@app.route('/api/todos', methods=['POST'])
 def add_todo():
     data = request.json
     priority_str = data.get('priority')
@@ -46,7 +49,7 @@ def add_todo():
     db.session.commit()
     return jsonify({"message": "To-Do added!"}), 201
 
-@app.route('/todos/<int:id>', methods=['PUT'])
+@app.route('/api/todos/<int:id>', methods=['PUT'])
 def update_todo(id):
     todo = Todo.query.get(id)
     if not todo:
@@ -57,7 +60,7 @@ def update_todo(id):
     db.session.commit()
     return jsonify({"message": "To-Do updated!"})
 
-@app.route('/todos/<int:id>', methods=['DELETE'])
+@app.route('/api/todos/<int:id>', methods=['DELETE'])
 def delete_todo(id):
     todo = Todo.query.get(id)
     if not todo:
@@ -66,23 +69,20 @@ def delete_todo(id):
     db.session.commit()
     return jsonify({"message": "To-Do deleted!"})
 
-@app.route('/todos/clear', methods=['GET'])
-def delete_todo_all():
-    todo = Todo.query.all()
-    if not todo:
-        return jsonify({"error": "Not Found"}), 404
-    db.session.clear()
-    db.session.commit()
-    return jsonify({"message": "List cleared"})
-
+# Serve frontend static files - KEEP THIS LAST so it doesn't override API routes
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_static(path):
-    if path and not os.path.exists(os.path.join(app.static_folder, path)):
-        path = 'index.html'  # Serve index.html if file not found
-    return send_from_directory(app.static_folder, path)
-
-
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Initialize the database
+    with app.app_context():
+        init_db()
+    
+    # Run the app
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
