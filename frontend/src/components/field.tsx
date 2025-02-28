@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, createListCollection, Fieldset, Input, Stack } from '@chakra-ui/react';
+import { Button, createListCollection, Fieldset, Input, Stack, Flex } from '@chakra-ui/react';
 import { Field } from "./ui/field";
 import { addTodo } from "../utils/utils";
 import {
@@ -20,24 +20,36 @@ const ListFieldSet = (props: any) => {
             { label: "Low", value: "Low"}
         ]
     })
+    const categoryValues = createListCollection({
+        items: [
+            { label: "Work", value: "Work" },
+            { label: "Personal", value: "Personal" }
+        ]
+    })
     const [selectedPriority, setSelectedPriority] = useState<string[]>(["Medium"])
     const [itemInputValue, setItemInputValue] = useState('')
     const [nameInputValue, setNameInputValue] = useState(listName)
+    const [selectedCategory, setSelectedCategory] = useState<string[]>(["Work"])
+    const [showInputs, setShowInputs] = useState(false)
     // const currentDate = moment().format("YYYY-MM-DD HH:MM:SS")
     const priority = () => selectedPriority[0] !== '' ? selectedPriority[0] : ''
+    const category = () => selectedCategory[0] !== '' ? selectedCategory[0] : ''
     const handleItemInputChange = (e: any) => setItemInputValue(e.target.value)
-    const handleNameInputChange = (e: any) => setNameInputValue(e.target.value)
-    const createToDo = async (title: string, priority: string, name: string) => await addTodo(title, priority, name)
-
+    const createToDo = async (title: string, priority: string, category: string) => await addTodo(title, priority, category)
+    console.log(showInputs)
     return (
-        <Fieldset.Root size="lg" maxW="md">
+        <>
+        {!showInputs && <Button style={{width: '350px', margin: 'auto'}} colorPalette="blue" onClick={() => setShowInputs(true)}>
+            + Add New Task
+        </Button>
+        }
+        {showInputs && <Fieldset.Root size="lg" maxW="md">
             <Stack>
             <Fieldset.Legend className="text-left font-extrabold" color="black">To Do list</Fieldset.Legend>
             <Fieldset.HelperText className="text-left" color="black">
                 Add an item to your list.
             </Fieldset.HelperText>
             </Stack>
-    
             <Fieldset.Content>
                 <Field className="text-black" label="Item">
                     <Input
@@ -49,17 +61,27 @@ const ListFieldSet = (props: any) => {
                     />
                 </Field>
             </Fieldset.Content>
-            <Fieldset.Content>
-                <Field className="text-black" label="Name">
-                    <Input
-                        variant="flushed"
-                        color="black"
-                        value={nameInputValue}
-                        onChange={handleNameInputChange}
-                        name="name"
-                    />
-                </Field>
-            </Fieldset.Content>
+            <Flex direction="row">
+            <SelectRoot
+                color="black"
+                size="sm"
+                collection={categoryValues}
+                value={selectedCategory}
+                defaultValue={["Work"]}
+                onValueChange={(e) => setSelectedCategory(e.value)}
+            >
+                <SelectLabel textAlign="left">Select category</SelectLabel>
+                <SelectTrigger>
+                    <SelectValueText placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                    {categoryValues.items.map((category) => (
+                        <SelectItem item={category} key={category.value}>
+                            {category.label}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </SelectRoot>
             <SelectRoot
                 color="black"
                 size="sm"
@@ -80,20 +102,36 @@ const ListFieldSet = (props: any) => {
                     ))}
                 </SelectContent>
             </SelectRoot>
-            <Button
-                disabled={itemInputValue === '' || nameInputValue === ''}
-                colorPalette="green"
-                onClick={() => {
-                    createToDo(itemInputValue, priority(), nameInputValue)
-                    checkUpdates(true)
-                    setItemInputValue('')
-                    setNameInputValue('')
-                    setSelectedPriority(["Medium"])
-                }}
-            >
-                Create
-            </Button>
+            </Flex>
+            <Flex direction="row" justify="center">
+                <Button
+                    style={{background: 'none'}}
+                    variant="ghost"
+                    color="black"
+                    onClick={() => {
+                        setShowInputs(false)
+                    }}
+                >
+                    Cancel
+                </Button>
+                <Button
+                    disabled={itemInputValue === ''}
+                    colorPalette="green"
+                    onClick={() => {
+                        createToDo(itemInputValue, priority(), category())
+                        checkUpdates(true)
+                        setItemInputValue('')
+                        setNameInputValue('')
+                        setSelectedPriority(["Medium"])
+                        setShowInputs(false)
+                    }}
+                >
+                    Create Item
+                </Button>
+            </Flex>
         </Fieldset.Root>
+        }
+        </>
     )
 }
 

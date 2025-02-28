@@ -10,34 +10,47 @@ import {
   import { createListCollection } from '@chakra-ui/react';
 
 const ListNameInput = (props) => {
-    const {listItems, setListName, listName, setHasUpdates} = props
-    const names = listItems.map(i => {
-        return {"label": i.name, "value" :i.name}
-    }) 
-    const foo = createListCollection({
-        items: names
+    const {listItems, setCategory, category, setHasUpdates} = props
+    const removeDuplicates = (arr, key) => {
+        const seen = new Set();
+        return arr.filter(item => {
+          const value = item[key];
+          if (seen.has(value)) {
+            return false;
+          }
+          seen.add(value);
+          return true;
+        });
+      }
+    const newListItems = removeDuplicates(listItems, 'category')
+    const categories = newListItems.map(i => {
+        return {"label": i.category, "value" :i.category}
+    }).concat({"label": "All", "value": "All"})
+    const collection = createListCollection({
+        items: categories
     })
+
 
     return (
         <>
-       {names.length > 0 && <div>
+       {categories.length > 0 && <div>
             <SelectRoot
                 color="black"
                 size="sm"
-                collection={foo}
-                value={listName}
+                collection={collection}
+                value={category}
                 defaultValue={['']}
                 onValueChange={(e) => {
-                    setListName(e.value)
+                    setCategory(e.value)
                     setHasUpdates(true)
                 }}
             >
-                <SelectLabel textAlign="left">Select list name</SelectLabel>
+                <SelectLabel textAlign="left">Category</SelectLabel>
                 <SelectTrigger>
-                    <SelectValueText placeholder="Select name" />
+                    <SelectValueText placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                    {foo?.items?.map((item: any) => (
+                    {collection?.items?.map((item: any) => (
                         <SelectItem item={item.value} key={item.value}>
                             {item.value}
                         </SelectItem>

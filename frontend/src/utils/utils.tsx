@@ -5,11 +5,11 @@ export const getTodos = async () => {
   return response.json();
 };
 
-export const addTodo = async (title: string, priority: string, name: string) => {
+export const addTodo = async (title: string, priority: string, category: string) => {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title, priority, name }),
+    body: JSON.stringify({ title, priority, category }),
   });
   return response.json();
 };

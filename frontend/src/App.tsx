@@ -10,35 +10,35 @@ import ListNameInput from './components/list_name_input'
 function App() {
   const [toDos, setTodos] = useState([])
   const [hasUpdates, setHasUpdates] = useState(false)
-  const [listName, setListName] = useState([''])
+  const [category, setCategory] = useState([''])
   const [copy, setCopy] = useState([])
 
   // Fetch todos when component mounts
   useEffect(() => {
-    fetchTodos(listName[0]);
+    fetchTodos(category[0]);
   }, []);
 
   useEffect(() => {
-    fetchTodos(listName[0]);
+    fetchTodos(category[0]);
   }, [hasUpdates])
 
-  const fetchTodos = async (listName) => {
+  const fetchTodos = async (category) => {
     const data = await getTodos();
     setCopy(Array.from(data))
-    if (listName[0] !== '') {
-      setTodos(data.filter(object => object.name === listName))
+    if (category[0] !== 'All' || category[0] !== '') {
+      setTodos(data.filter(object => object.category === category))
     }
-    if (listName === '') {
+    if (category === '' || category === 'All') {
       setTodos(data)
     }
     setHasUpdates(false)
   };
 
   return (
-    <Container style={{width: '350px', padding: '12px'}} className='bg-gray-200 rounded-md'>
-      <ListNameInput listItems={copy} setListName={setListName} setHasUpdates={setHasUpdates} />
-      <Flex direction="column" gap="8">
-        <ListFieldSet checkUpdates={setHasUpdates} listItems={toDos} listName={listName} />
+    <Container style={{width: '550px', padding: '12px'}} className='bg-white rounded-md shadow-lg'>
+      <Flex direction="column" gap="4">
+        {toDos.length > 0 && <ListNameInput listItems={copy} setCategory={setCategory} setHasUpdates={setHasUpdates} />}
+        <ListFieldSet checkUpdates={setHasUpdates} listItems={toDos} category={category} />
         <ListComponent
           refreshList={fetchTodos}
           checkUpdates={setHasUpdates}

@@ -10,10 +10,10 @@ const ListWrapper = (props) => {
             <Flex direction="column" gap="8">
                 <ListFieldSet checkUpdates={setHasUpdates} listItems={toDos} />
                 <ListComponent
-                refreshList={fetchTodos}
-                checkUpdates={setHasUpdates}
-                listItems={toDos}
-                setListItems={setTodos}
+                    refreshList={fetchTodos}
+                    checkUpdates={setHasUpdates}
+                    listItems={toDos}
+                    setListItems={setTodos}
                 />
             </Flex>
         </>

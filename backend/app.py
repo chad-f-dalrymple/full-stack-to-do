@@ -32,11 +32,12 @@ class Todo(db.Model):
     title = db.Column(db.String(200), nullable=False)
     completed = db.Column(db.Boolean, default=False)
     priority = db.Column(db.String, nullable=False)
-    name = db.Column(db.String, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow) 
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    category = db.Column(db.String, nullable=False)
 
 def init_db():
     """Initialize the database."""
+    db.drop_all()
     db.create_all()
     db.session.commit()
 
@@ -65,12 +66,12 @@ def init_scheduler():
 @app.route('/api/todos', methods=['GET'])
 def get_todos():
     todos = Todo.query.all()
-    return jsonify([{"id": t.id, "title": t.title, "completed": t.completed, "priority": t.priority, "name": t.name} for t in todos])
+    return jsonify([{"id": t.id, "title": t.title, "completed": t.completed, "priority": t.priority, "category": t.category} for t in todos])
 
 @app.route('/api/todos', methods=['POST'])
 def add_todo():
     data = request.json
-    new_todo = Todo(title=data['title'], priority=data['priority'], name=data['name'])
+    new_todo = Todo(title=data['title'], priority=data['priority'], category=data['category'])
     db.session.add(new_todo)
     db.session.commit()
     return jsonify({"message": "To-Do added!"}), 201
