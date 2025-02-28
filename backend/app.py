@@ -33,7 +33,7 @@ class Todo(db.Model):
     completed = db.Column(db.Boolean, default=False)
     priority = db.Column(db.String, nullable=False)
     name = db.Column(db.String, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.now(datetime.timezone.utc)) 
+    created_at = db.Column(db.DateTime, default=datetime.utcnow) 
 
 def init_db():
     """Initialize the database."""
@@ -44,7 +44,7 @@ def init_db():
 def clear_old_todos():
     with app.app_context():
         # Define the age threshold (e.g., 7 days)1
-        threshold_date = datetime.now(datetime.timezone.utc) - timedelta(days=7)
+        threshold_date = datetime.utcnow() - timedelta(days=7)
         
         # Delete todos older than the threshold
         old_todos = Todo.query.filter(Todo.created_at < threshold_date).all()
@@ -65,7 +65,7 @@ def init_scheduler():
 @app.route('/api/todos', methods=['GET'])
 def get_todos():
     todos = Todo.query.all()
-    return jsonify([{"id": t.id, "title": t.title, "completed": t.completed, "priority": t.priority, "name": t.name, "created_at": t.created_at} for t in todos])
+    return jsonify([{"id": t.id, "title": t.title, "completed": t.completed, "priority": t.priority, "name": t.name} for t in todos])
 
 @app.route('/api/todos', methods=['POST'])
 def add_todo():
