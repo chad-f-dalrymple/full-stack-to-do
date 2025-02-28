@@ -12,11 +12,12 @@ interface Props {
     setListItems: any;
     refreshList: any;
     checkUpdates: any;
+    addState?: boolean;
 }
 
 const ListComponent = (props: Props) => {
     let isChecked: string | boolean;
-    const { listItems, checkUpdates } = props
+    const { listItems, checkUpdates, addState } = props
     const currentDate = moment().format("YYYY-MM-DD HH:MM:SS")
     const deleteItem = async (item: number) => await deleteTodo(item)
     const updateItem = async (id: number, checked: boolean, date: any) => await updateTodo(id, checked, date)
@@ -97,7 +98,7 @@ const ListComponent = (props: Props) => {
     )
     return (
         <Container style={{marginTop: '14px'}} maxWidth="xl" px="2">
-            {listItems.length === 0 &&
+            {listItems.length === 0 && !addState &&
                 <div className='text-black' style={{marginBottom: '16px'}}>No tasks found. Time to create one!</div>
             }
             {list}

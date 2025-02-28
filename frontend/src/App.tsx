@@ -12,6 +12,7 @@ function App() {
   const [hasUpdates, setHasUpdates] = useState(false)
   const [category, setCategory] = useState([''])
   const [copy, setCopy] = useState([])
+  const [addState, setAddState] = useState(false)
 
   // Fetch todos when component mounts
   useEffect(() => {
@@ -38,8 +39,9 @@ function App() {
     <Container style={{width: '550px', padding: '12px'}} className='bg-white rounded-md shadow-lg'>
       <Flex direction="column" gap="4">
         {toDos.length > 0 && <ListNameInput listItems={copy} setCategory={setCategory} setHasUpdates={setHasUpdates} />}
-        <ListFieldSet checkUpdates={setHasUpdates} listItems={toDos} category={category} />
+        <ListFieldSet setAddState={setAddState} checkUpdates={setHasUpdates} listItems={toDos} category={category} />
         <ListComponent
+          addState={addState}
           refreshList={fetchTodos}
           checkUpdates={setHasUpdates}
           listItems={toDos}

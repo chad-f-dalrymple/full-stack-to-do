@@ -12,7 +12,7 @@ import {
   } from "../components/ui/select"
 
 const ListFieldSet = (props: any) => {
-    const { checkUpdates, listName } = props
+    const { checkUpdates, listName, setAddState } = props
     const priorityValues = createListCollection({
         items: [
             { label: "High", value: "High"},
@@ -39,9 +39,17 @@ const ListFieldSet = (props: any) => {
     console.log(showInputs)
     return (
         <>
-        {!showInputs && <Button style={{width: '350px', margin: 'auto'}} colorPalette="blue" onClick={() => setShowInputs(true)}>
-            + Add New Task
-        </Button>
+        {!showInputs && 
+            <Button
+                style={{width: '350px', margin: 'auto'}}
+                colorPalette="blue"
+                onClick={() => {
+                    setAddState(true)
+                    setShowInputs(true)}
+                }
+            >
+                + Add New Task
+            </Button>
         }
         {showInputs && <Fieldset.Root size="lg" maxW="md">
             <Stack>
@@ -109,6 +117,7 @@ const ListFieldSet = (props: any) => {
                     variant="ghost"
                     color="black"
                     onClick={() => {
+                        setAddState(false)
                         setShowInputs(false)
                     }}
                 >
