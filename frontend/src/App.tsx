@@ -23,7 +23,7 @@ function App() {
     fetchTodos(category[0]);
   }, [hasUpdates])
 
-  const fetchTodos = async (category) => {
+  const fetchTodos = async (category?) => {
     const data = await getTodos();
     setCopy(Array.from(data))
     if (category[0] !== 'All' || category[0] !== '') {
@@ -38,8 +38,8 @@ function App() {
   return (
     <Container style={{width: '550px', padding: '12px'}} className='bg-white rounded-md shadow-lg'>
       <Flex direction="column" gap="4">
+      <h2 className='text-black'>My Tasks</h2>
         {toDos.length > 0 && <ListNameInput listItems={copy} setCategory={setCategory} setHasUpdates={setHasUpdates} />}
-        <ListFieldSet setAddState={setAddState} checkUpdates={setHasUpdates} listItems={toDos} category={category} />
         <ListComponent
           addState={addState}
           refreshList={fetchTodos}
@@ -47,6 +47,7 @@ function App() {
           listItems={toDos}
           setListItems={setTodos}
         />
+        <ListFieldSet setAddState={setAddState} checkUpdates={setHasUpdates} listItems={toDos} category={category} />
       </Flex>
     </Container>
   )

@@ -14,11 +14,11 @@ export const addTodo = async (title: string, priority: string, category: string)
   return response.json();
 };
 
-export const updateTodo = async (id: number, completed: boolean, date: Date) => {
+export const updateTodo = async (id: number, completed: boolean) => {
   const response = await fetch(`${API_URL}/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ completed, date }),
+    body: JSON.stringify({ completed }),
   });
   return response.json();
 };

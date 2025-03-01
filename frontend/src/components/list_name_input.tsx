@@ -30,7 +30,6 @@ const ListNameInput = (props) => {
         items: categories
     })
 
-
     return (
         <>
        {categories.length > 0 && <div>
@@ -45,7 +44,7 @@ const ListNameInput = (props) => {
                     setHasUpdates(true)
                 }}
             >
-                <SelectLabel textAlign="left">Category</SelectLabel>
+                <SelectLabel textAlign="left">Filter By Category</SelectLabel>
                 <SelectTrigger>
                     <SelectValueText placeholder="Select category" />
                 </SelectTrigger>

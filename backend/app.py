@@ -37,7 +37,6 @@ class Todo(db.Model):
 
 def init_db():
     """Initialize the database."""
-    db.drop_all()
     db.create_all()
     db.session.commit()
 
