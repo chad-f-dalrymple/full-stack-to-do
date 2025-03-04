@@ -34,7 +34,6 @@ const ListComponent = (props: Props) => {
       return isChecked || completed ? 'bg-gray-200' : 'bg-green-600'
     }
   }
-  console.log(isEditing)
   const itemClassName = (completed: string | boolean) => completed || isChecked ? "text-gray-200" : "text-blue-600"
   const list = listItems.map((item, idx) =>
     <>
