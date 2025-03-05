@@ -6,7 +6,8 @@ import os
 from flask_apscheduler import APScheduler
 from flask_migrate import Migrate
 
-app = Flask(__name__, static_folder='../frontend/dist')
+static_folder_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../frontend/dist'))
+app = Flask(__name__, static_folder=static_folder_path, static_url_path='')
 CORS(app)  # Enable CORS for frontend
 scheduler = APScheduler()
 
@@ -95,14 +96,32 @@ def delete_todo(id):
     db.session.commit()
     return jsonify({"message": "To-Do deleted!"})
 
-# Serve frontend static files - KEEP THIS LAST so it doesn't override API routes
+@app.route('/debug-static')
+def debug_static():
+    result = {
+        'static_folder': app.static_folder,
+        'static_folder_exists': os.path.exists(app.static_folder),
+        'files_in_static_folder': []
+    }
+    
+    if result['static_folder_exists']:
+        result['files_in_static_folder'] = os.listdir(app.static_folder)
+        
+        # Check for CSS files specifically
+        result['css_files'] = [f for f in result['files_in_static_folder'] if f.endswith('.css')]
+        
+        # Check if index.html exists
+        result['index_html_exists'] = 'index.html' in result['files_in_static_folder']
+    
+    return result
+
+# Serve frontend static files
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_static(path):
-    if path != "" and os.path.exists(app.static_folder + '/' + path):
+    if path and os.path.exists(os.path.join(app.static_folder, path)):
         return send_from_directory(app.static_folder, path)
-    else:
-        return send_from_directory(app.static_folder, 'index.html')
+    return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
     # Initialize the database

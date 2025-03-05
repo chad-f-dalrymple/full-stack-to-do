@@ -5,6 +5,7 @@ import {
   ColorModeProvider,
   type ColorModeProviderProps,
 } from "./color-mode"
+import * as React from "react"
 
 export function Provider(props: ColorModeProviderProps) {
   return (
