@@ -142,7 +142,7 @@ const ListFieldSet = (props: any) => {
               onClick={() => {
                 toaster.promise(createToDo(itemInputValue, priority(), category()), {
                   success: {
-                    title: "Successfully uploaded!",
+                    title: "Successfully added!",
                     description: "Looks great",
                     duration: 6000
                   },
