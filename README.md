@@ -2,9 +2,6 @@
 
 A full-stack to-do list application featuring a Python backend and a modern JavaScript frontend.
 
-Live Demo
-Check out the live application: [To-Do Web App](https://to-do-web-d583287f951c.herokuapp.com/)
-
 ## Overview
 
 This application provides a simple and intuitive interface for managing your daily tasks. It combines a Python backend (using SQLite for local development and PostgreSQL for production) with a JavaScript frontend.
